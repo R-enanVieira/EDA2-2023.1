@@ -1,0 +1,25 @@
+vetor não ordenado 
+  -Busca vetor não ordenado: O(n)
+  -Inserir: O(1)
+  -Remover: O(1)
+
+vetor ordenado
+  -Busca vetor ordenado: O(lg(n))
+  -Inserir: O(n)
+  -Remover: O(n)
+
+lista encadeada não ordenada
+  -Busca: O(n)
+  -Inserir: O(1)
+  -Remover: O(1)
+
+lista encadeada ordenada
+  -Busca: O(n)
+  -Inserir: O(n)
+  -Remover: O(1)
+
+hash
+  -Busca: O(1)
+  -Inserir: O(1)
+  -Remover: O(1)  
+
