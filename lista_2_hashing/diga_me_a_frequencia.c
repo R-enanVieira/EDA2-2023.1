@@ -2,12 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-const int MAX = 1000001;
-
 typedef struct item {
-  int num;
+  char c;
   int cont;
 } item;
+
 
 static void merge(item *v, int l, int m, int r) {
 	item *aux;
@@ -16,8 +15,9 @@ static void merge(item *v, int l, int m, int r) {
 	int k = 0;
 
 	while(i < m && j < r) {
-		if(v[i].cont >= v[j].cont) aux[k++] = v[i++];
-		else aux[k++] = v[j++];
+		if(v[i].cont < v[j].cont) aux[k++] = v[i++];
+		else if(v[i].cont == v[j].cont && v[i].c < v[j].c) aux[k++] = v[i++];
+    else aux[k++] = v[j++];
 	}
 	while(i < m) aux[k++] = v[i++];	
 	while(j < r) aux[k++] = v[j++];
@@ -36,20 +36,24 @@ void merge_sort(item *v, int l, int r) {
 }
 
 int main() {
-  int n; 
+  char s[1001];
 
-  while(scanf("%d", &n) == 1, n != 0) {
-    item ht[MAX];
-    memset(ht, 0, sizeof(item)*MAX);
-    for(int i = 0; i < n; i++) {
-      int x; scanf("%d", &x);
-      ht[x].cont++;
-      ht[x].num = x;
+  while(scanf("%s", s) != EOF) {
+    item ht[128];
+    memset(ht, 0, sizeof(item)*128);
+    for (int i = 0; s[i] != '\0'; i++) {
+      ht[s[i]].c = s[i];
+      ht[s[i]].cont++;
     }
+    merge_sort(ht, 0, 128);
 
-    merge_sort(ht, 0, MAX);
+    for(int i = 0; i < 128; i++) {
+      if(ht[i].cont) {
+        printf("%d %d\n", ht[i].c, ht[i].cont);
+      }
+    }
+    printf("\n");
 
-    printf("%d\n", ht[0].num);
   }
 
   return 0;

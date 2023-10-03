@@ -2,11 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-const int MAX = 1000001;
-
 typedef struct item {
-  int num;
-  int cont;
+  int nota;
+  int quant;
 } item;
 
 static void merge(item *v, int l, int m, int r) {
@@ -16,7 +14,8 @@ static void merge(item *v, int l, int m, int r) {
 	int k = 0;
 
 	while(i < m && j < r) {
-		if(v[i].cont >= v[j].cont) aux[k++] = v[i++];
+		if(v[i].quant > v[j].quant) aux[k++] = v[i++];
+    else if(v[i].quant == v[j].quant && v[i].nota > v[j].nota) aux[k++] = v[i++];
 		else aux[k++] = v[j++];
 	}
 	while(i < m) aux[k++] = v[i++];	
@@ -36,21 +35,15 @@ void merge_sort(item *v, int l, int r) {
 }
 
 int main() {
-  int n; 
-
-  while(scanf("%d", &n) == 1, n != 0) {
-    item ht[MAX];
-    memset(ht, 0, sizeof(item)*MAX);
-    for(int i = 0; i < n; i++) {
-      int x; scanf("%d", &x);
-      ht[x].cont++;
-      ht[x].num = x;
-    }
-
-    merge_sort(ht, 0, MAX);
-
-    printf("%d\n", ht[0].num);
+  int n, ans = 0; scanf("%d", &n);
+  item ht[101];
+  memset(ht, 0, sizeof(item)*101);
+  while(n--) {
+    int x; scanf("%d", &x);
+    ht[x].nota = x;
+    ht[x].quant++;
   }
-
-  return 0;
+  merge_sort(ht, 0, 101);
+  printf("%d\n", ht[0].nota);
 }
+
