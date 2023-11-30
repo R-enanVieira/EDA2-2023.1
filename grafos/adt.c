@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define maxV 2000;
+#define maxV 2000
 
 typedef struct edge {
   int v;
@@ -22,7 +22,7 @@ struct graph {
 
 typedef struct graph *Graph;
 
-static int pre[maxV];
+static int pre[maxV], cnt = 0;
 
 int **MATRIXinit(int R, int C, int x) {
   int **m = (int **)malloc(sizeof(int) * R);
@@ -60,7 +60,7 @@ void GRAPHDestroy(Graph);
 
 void dfsR(Graph G, Edge e) {
   int t, w = e.w;
-  pre[w] = cnt++;  // variaveis globais
+  pre[w] = cnt++;
   for (t = 0; t < G->V; t++) {
     if (G->adj[w][t] != 0)
       if (pre[t] == -1) dfsR(G, EDGE(w, t));
