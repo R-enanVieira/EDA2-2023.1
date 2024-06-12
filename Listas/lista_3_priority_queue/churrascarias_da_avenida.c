@@ -1,43 +1,47 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 int notas[100001];
 const int vm = 2000000000;
 
 #define PRIOR(A) (notas[A])
 #define less(A, B) (A < B)
-#define exch(A, B) { int t=A; A=B; B=t; }
+#define exch(A, B) \
+  {                \
+    int t = A;     \
+    A = B;         \
+    B = t;         \
+  }
 #define MAX 100001
 
-int PQ[MAX]; 
+int PQ[MAX];
 int leaf = 1;
 int posicoesPQ[MAX];
 
 void fixup(int v) {
   posicoesPQ[PQ[v]] = v;
-  while(v>1 && less(PRIOR(PQ[v]), PRIOR(PQ[v/2]))) {
-    exch(PQ[v], PQ[v/2]);
-    
-    posicoesPQ[PQ[v/2]] = v/2;
+  while (v > 1 && less(PRIOR(PQ[v]), PRIOR(PQ[v / 2]))) {
+    exch(PQ[v], PQ[v / 2]);
+
+    posicoesPQ[PQ[v / 2]] = v / 2;
     posicoesPQ[PQ[v]] = v;
-    
-    v = v/2;
-  } 
+
+    v = v / 2;
+  }
 }
 
 void fixdown(int v, int p) {
   int j;
   posicoesPQ[PQ[v]] = v;
 
-  while(v*2 <= p) {
-    j = v*2;  
-    if(j<=p && j+1<=p && less(PRIOR(PQ[j+1]), PRIOR(PQ[j]))) j++;
-    
-    if(less(PRIOR(PQ[v]), PRIOR(PQ[j]))) break;
-    
+  while (v * 2 <= p) {
+    j = v * 2;
+    if (j <= p && j + 1 <= p && less(PRIOR(PQ[j + 1]), PRIOR(PQ[j]))) j++;
+
+    if (less(PRIOR(PQ[v]), PRIOR(PQ[j]))) break;
+
     exch(PQ[v], PQ[j]);
     posicoesPQ[PQ[v]] = v;
-    
+
     v = j;
 
     posicoesPQ[PQ[j]] = j;
@@ -58,24 +62,24 @@ void PQreplace(int id_old, int id_new, int profundidade) {
 }
 
 int main() {
-  int n, k; 
-  while(scanf("%d %d", &n, &k), n && k) {
+  int n, k;
+  while (scanf("%d %d", &n, &k), n && k) {
     leaf = 1;
-    for(int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
       scanf("%d", &notas[i]);
-      if(i < k) PQinsert(i);
+      if (i < k) PQinsert(i);
     }
-    
-  
+
     int oldest = 0;
     int prox = k;
-    
-    while(prox < n) {
+
+    while (prox < n) {
       printf("%d ", notas[PQ[1]]);
       PQreplace(oldest, prox, k);
-      oldest++; prox++;
+      oldest++;
+      prox++;
     }
-   
+
     printf("%d\n", notas[PQ[1]]);
   }
 }
